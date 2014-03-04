@@ -27,8 +27,13 @@ echo "Download complited" | indent
 echo "Adding paths" | arrow
 
 EXPORT_FILE_PATH=$BUILD_DIR/export
+
+echo "echo loading export file"
+echo "export CPPPATH=\"\$BUILD_DIR/hiredis/include:\$C_INCLUDE_PATH\"" >> $EXPORT_FILE_PATH
+echo "export CPATH=\"\$BUILD_DIR/hiredis/include:\$C_INCLUDE_PATH\"" >> $EXPORT_FILE_PATH
 echo "export C_INCLUDE_PATH=\"\$BUILD_DIR/hiredis/include:\$C_INCLUDE_PATH\"" >> $EXPORT_FILE_PATH
 echo "export LIBRARY_PATH=\"\$BUILD_DIR/hiredis/lib:\$LIBRARY_PATH\"" >> $EXPORT_FILE_PATH
+echo "export LD_LIBRARY_PATH=\"\$BUILD_DIR/hiredis/lib:\$LIBRARY_PATH\"" >> $EXPORT_FILE_PATH
 
 mkdir -p $BUILD_DIR/.profile.d
 PROFILE_PATH=$BUILD_DIR/.profile.d/hiredis.sh
