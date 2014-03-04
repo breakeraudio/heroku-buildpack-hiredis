@@ -26,8 +26,9 @@ echo "Download complited" | indent
 
 echo "Adding paths" | arrow
 
-export C_INCLUDE_PATH="$BUILD_DIR/hiredis/include:$C_INCLUDE_PATH"
-export LIBRARY_PATH="$BUILD_DIR/hiredis/lib:$LIBRARY_PATH"
+EXPORT_FILE_PATH=$BUILD_DIR/export
+echo "export C_INCLUDE_PATH=\"\$BUILD_DIR/hiredis/include:\$C_INCLUDE_PATH\"" >> $EXPORT_FILE_PATH
+echo "export LIBRARY_PATH=\"\$BUILD_DIR/hiredis/lib:\$LIBRARY_PATH\"" >> $EXPORT_FILE_PATH
 
 mkdir -p $BUILD_DIR/.profile.d
 PROFILE_PATH=$BUILD_DIR/.profile.d/hiredis.sh
