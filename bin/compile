@@ -1,0 +1,36 @@
+#! /bin/bash
+
+set -e
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+
+indent() {
+  sed -u 's/^/       /'
+}
+
+arrow() {
+  sed -u 's/^/-----> /'
+}
+
+echo "Installing hiredis" | arrow
+echo "Download package" | indent
+
+PACKAGE_PATH="https://s3-ap-northeast-1.amazonaws.com/keiko-bucket/ebf77f1c-6fd8-49d1-86f5-cc8fe9577901.tgz"
+LOCATION=$BUILD_DIR/hiredis
+
+mkdir -p $LOCATION
+curl $PACKAGE_PATH -s -o - | tar xzf - -C $LOCATION
+
+echo "Download complited" | indent
+
+echo "Adding paths" | arrow
+
+export C_INCLUDE_PATH="$BUILD_DIR/hiredis/include:$C_INCLUDE_PATH"
+export LIBRARY_PATH="$BUILD_DIR/hiredis/lib:$LIBRARY_PATH"
+
+mkdir -p $BUILD_DIR/.profile.d
+PROFILE_PATH=$BUILD_DIR/.profile.d/hiredis.sh
+
+echo "export C_INCLUDE_PATH=\"\$HOME/hiredis/include:\$C_INCLUDE_PATH\"" >> $PROFILE_PATH
+echo "export LIBRARY_PATH=\"\$HOME/hiredis/lib:\$LIBRARY_PATH\"" >> $PROFILE_PATH
