@@ -17,7 +17,7 @@ echo "Installing hiredis" | arrow
 echo "Download package" | indent
 
 PACKAGE_PATH="https://s3-ap-northeast-1.amazonaws.com/keiko-bucket/ebf77f1c-6fd8-49d1-86f5-cc8fe9577901.tgz"
-LOCATION=$BUILD_DIR/hiredis
+LOCATION=$BUILD_DIR/vendor/hiredis
 
 mkdir -p $LOCATION
 curl $PACKAGE_PATH -s -o - | tar xzf - -C $LOCATION
@@ -26,18 +26,20 @@ echo "Download complited" | indent
 
 echo "Adding paths" | arrow
 
+echo "Write paths to export file" | indent
+
 BUILDPACK_DIR=$(cd $(dirname $0)/..; pwd)
-EXPORT_FILE_PATH=$BUILDPACK_DIR/export
 
 cat <<EOF > $BUILDPACK_DIR/export
-export C_INCLUDE_PATH="$BUILD_DIR/hiredis/include:\$C_INCLUDE_PATH"
-export LIBRARY_PATH="$BUILD_DIR/hiredis/lib:\$LIBRARY_PATH"
+export C_INCLUDE_PATH="$LOCATION/include:\$C_INCLUDE_PATH"
+export LIBRARY_PATH="$LOCATION/lib:\$LIBRARY_PATH"
 EOF
+
+echo "Write paths to .profile.d" | indent
 
 mkdir -p $BUILD_DIR/.profile.d
 
-
 cat <<EOF > $BUILD_DIR/.profile.d/hiredis.sh
-export C_INCLUDE_PATH="\$HOME/hiredis/include:\$C_INCLUDE_PATH"
-export LIBRARY_PATH="\$HOME/hiredis/lib:\$LIBRARY_PATH"
+export C_INCLUDE_PATH="\$HOME/vendor/hiredis/include:\$C_INCLUDE_PATH"
+export LIBRARY_PATH="\$HOME/vendor/hiredis/lib:\$LIBRARY_PATH"
 EOF
