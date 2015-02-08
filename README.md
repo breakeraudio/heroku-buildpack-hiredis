@@ -1,10 +1,7 @@
 heroku-buildpack-hiredis
 ========================
 
-Installing hiredis to the slug, and passing the paths to subsequent buildpacks.
-You need to use https://github.com/mojodna/heroku-buildpack-multi.git#build-env as a buildpack.
-
-Since above buildpack doesn't pass the new envfile argument to compile as the third arg (rebase is needed), if your app depends on the config variables during the slug compile, the compile may fail.
+If a gem is depending on hiredis during `gem install` (such as [recommendify](https://rubygems.org/gems/recommendify)), `git push heroku master` fails since Heroku slug compiler doesn't have hiredis by default. In this case, you need to add hiredis first and setup proper PATHs before you run `bundle install`. This buildpack is in charge of doing it.
 
 How to use
 ----------
@@ -12,7 +9,7 @@ How to use
 ### Specify buildpack
 
 ```
-heroku config:add BUILDPACK_URL=https://github.com/mojodna/heroku-buildpack-multi.git#build-env
+heroku config:add BUILDPACK_URL=https://github.com/ddollar/heroku-buildpack-multi.git
 ```
 
 ### Add .buildpacks
