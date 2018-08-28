@@ -42,4 +42,5 @@ mkdir -p $BUILD_DIR/.profile.d
 cat <<EOF > $BUILD_DIR/.profile.d/hiredis.sh
 export C_INCLUDE_PATH="\$HOME/vendor/hiredis/include:\$C_INCLUDE_PATH"
 export LIBRARY_PATH="\$HOME/vendor/hiredis/lib:\$LIBRARY_PATH"
+export LD_LIBRARY_PATH="$HOME/vendor/hiredis/lib:$LD_LIBRARY_PATH"
 EOF
